@@ -1,0 +1,52 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<div class="panel panel-default" style="width: 80%">
+    <div class="panel-body">
+    <div style="padding: 0px 100px 10px;">
+        {{form.hidden_tag()}}
+        <h1 class="text-center">注册</h1>
+        <form class="bs-example bs-example-form" action="" method="post" name="register">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;昵称&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" placeholder="Nickname" name="nickname" >
+                 {% for error in form.errors.nickname %}
+                <br><span class="label label-warning">[{{error}}]</span>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;密码&nbsp;&nbsp;&nbsp;</span>
+                <input type="password" class="form-control" placeholder="Password" name="password">
+                {% for error in form.errors.password %}
+                <br><span class="label label-warning">[{{error}}]</span>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">确认密码</span>
+                <input type="password" class="form-control" placeholder="Confirm" name="confirm">
+                 {% for error in form.errors.confirm %}
+                <br><span class="label label-warning">[{{error}}]</span>
+                {% endfor %}
+
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;邮箱&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" placeholder="Email" name="email">
+                 {% for error in form.errors.email %}
+                <br><span class="label label-warning">[{{error}}]</span>
+                {% endfor %}
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <input type="submit" class="form-control" value="Submit" style="left: 330%">
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}

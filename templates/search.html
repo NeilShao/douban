@@ -1,0 +1,81 @@
+<style>
+    .case {
+  text-align: center;
+  margin-top: 20px;
+}
+.case img {
+  height: 200px;
+}
+</style>
+
+{% extends "base.html" %}
+{% block title %} - User - {% endblock %}
+{% block page_content %}
+<div style="width: 70%;">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+                {{wtf.quick_form(search_form)}}
+        </div>
+    </nav>
+</div>
+
+<div class="content" style="width: 70%">
+    <div class="panel panel-default">
+         <div class="panel-body">
+            <label>年份</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 2016
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="option2"> 2015
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> 2014
+            </label>
+           </div>
+        <div class="panel-body">
+            <label>标签  </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox4" value="option1"> 爱情
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox5" value="option2"> 悬疑
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox6" value="option3"> 文艺
+            </label>
+           </div>
+    </div>
+
+    <div class="panel panel-default">
+        {% if not movies == () %}
+        <div class="panel-body">
+            {% for movie in movies %}
+            {% include 'item.html' %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center">
+            <h1>没有了 。。。 </h1>
+        </div>
+        {% endif %}
+
+        <ul class="pagination pagination-lg" style="margin-left: 36%">
+            {%  if page != 1%}
+            <li class="previous"><a href="{{url_for('search', content = content,page = page - 1)}}">&larr; Older</a></li>
+            {% else %}
+            <li class="previous disabled"><a href="#">&larr; Older</a></li>
+            {% endif%}
+
+            {%  if  not over %}
+            <li class="next"><a href="{{url_for('search',content = content, page = page + 1)}}">Newer &rarr;</a></li>
+            {% else %}
+            <li class="next disabled"><a href="#">Newer &rarr;</a></li>
+            {% endif%}
+
+        </ul>
+    </div>
+
+
+</div>
+{% endblock %}

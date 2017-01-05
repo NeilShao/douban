@@ -1,0 +1,97 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block page_content %}
+<div style="width: 70%">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table>
+                <tr valign="top">
+                    <td><img src="{{user.avatar(128)}}" height="150" width="150" style="padding-left: 2%" class="img-rounded"></td>
+                    <td>
+                         <h1>昵称: {{user.nickname}}</h1>
+                        {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
+                        {% if user.last_seen %}<p>最近登录时间: {{user.last_seen.strftime("%Y-%m-%d %H:%M:%S")}}</p>{% endif %}
+                         <span class="label label-info">
+                             <strong>{{user.followers.count()}}</strong> 关注者
+                         </span>
+                         {% if user.id == g.user.id %}
+                            <a href="#">Edit your profile</a>
+                        {% elif not g.user.is_following(user) %}
+                            <a href="{{url_for('follow', nickname = user.nickname)}}">&nbsp;&nbsp;&nbsp;关注</a>
+                        {% else %}
+                            <a href="{{url_for('unfollow', nickname = user.nickname)}}">&nbsp;取消关注</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+       </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ul id="myTab" class="nav nav-tabs">
+                {% if not friend %}
+                <li class="active"><a href="#home" data-toggle="tab">短评</a></li>
+                <li><a href="#friend" data-toggle="tab">好友</a></li>
+                {% else %}
+                <li><a href="#home" data-toggle="tab">短评</a></li>
+                <li class="active"><a href="#friend" data-toggle="tab">好友</a></li>
+                {% endif %}
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                {% if friend %}
+                <div class="tab-pane fade" id="home">
+                {% else%}
+                <div class="tab-pane fade in active" id="home">
+                {% endif %}
+                    {% for comment in comments.items  %}
+                        {% include 'comment_user.html' %}
+                    {% endfor %}
+                     <ul class="pagination pagination-lg" style="margin-left: 36%">
+                         {%  if comments.has_prev %}
+                        <li class="previous"><a href="{{url_for('user', nickname = user.nickname, page = comments.prev_num,friend = 0)}}"><< 上一页</a></li>
+                        {% else %}
+                        <li class="previous disabled"><a href="#"><< 上一页</a></li>
+                        {% endif%}
+
+                        {%  if comments.has_next %}
+                        <li class="next"><a href="{{url_for('user', nickname = user.nickname, page = comments.next_num,friend = 0)}}">下一页 >></a></li>
+                        {% else %}
+                        <li class="next disabled"><a href="#">下一页 >></a></li>
+                        {% endif%}
+
+                    </ul>
+                </div>
+                {% if friend %}
+                <div class="tab-pane fade in active" id="friend">
+                {% else%}
+                <div class="tab-pane fade" id="friend">
+                {% endif %}
+                    {% for comment in comments_friends.items  %}
+                        {% include 'comment_user.html' %}
+                    {% endfor %}
+                     <ul class="pagination pagination-lg" style="margin-left: 36%">
+                         {%  if comments_friends.has_prev %}
+                        <li class="previous"><a href="{{url_for('user', nickname = user.nickname, friend_page = comments_friends.prev_num,friend = 1)}}"><< 上一页</a></li>
+                        {% else %}
+                        <li class="previous disabled"><a href="#"><< 上一页</a></li>
+                        {% endif%}
+
+                        {%  if comments_friends.has_next %}
+                        <li class="next"><a href="{{url_for('user', nickname = user.nickname, friend_page = comments_friends.next_num,friend = 1)}}">下一页 >></a></li>
+                        {% else %}
+                        <li class="next disabled"><a href="#">下一页 >></a></li>
+                        {% endif%}
+
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

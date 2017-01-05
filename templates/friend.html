@@ -1,0 +1,161 @@
+<style>
+    .info{
+            float: left;
+            word-wrap: break-word;
+            width: 60%;
+    }
+
+    .img{
+        float: left;
+        text-align: center;
+        margin: 3px 12px 0 0;
+        max-width: 155px;
+        overflow: hidden;
+    }
+
+    .pl{
+        font: 14px Arial, Helvetica, sans-serif;
+        color: #666666;
+        float: left;
+    }
+
+    .left {
+    float: left;
+    }
+</style>
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}  {{movie[2]}}  {% endblock %}
+
+{% block page_content %}
+<div style="width: 70%">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div>
+                <h3><strong>{{movie[2] + '(' + movie[4] + ')'}}</strong></h3>
+                <div class="img">
+                   <img src="{{movie[7]}}" height="214" width="150">
+                </div>
+
+                <div class="info">
+                    {% if movie[8] %}
+                    <span>
+                        <p class="pl">导演：</p>
+                        <p>{{movie[8]}}</p>
+                    </span>
+                    {% endif %}
+
+                    {% if movie[9] %}
+                   <span>
+                        <p class="pl">编剧：</p>
+                        <p>{{movie[9]}}</p>
+                    </span>
+                    {% endif %}
+
+                    {% if movie[10] %}
+                    <span>
+                        <p class="pl">主演：</p>
+                        <p>{{movie[10]}}</p>
+                    </span>
+                    {% endif %}
+
+                    {% if movie[11] %}
+                     <span>
+                        <p class="pl">上映时间：</p>
+                        <p>{{movie[11]}}</p>
+                    </span>
+                    {% endif %}
+
+                    {% if movie[15] %}
+                     <span>
+                        <p class="pl">标签：</p>
+                        <p>{{movie[15]}}</p>
+                    </span>
+                    {% endif %}
+
+                    {% if movie[16] %}
+                    <span>
+                        <p class="pl">制片国家/地区：</p>
+                        <p>{{movie[16]}}</p>
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="left">
+                    <span>
+                        <p class="text-primary">豆瓣评分</p>
+                    </span>
+
+                    <h1><strong>{{movie[5]}}</strong></h1>
+
+                    <span class="label label-info">
+                         <strong>{{movie[6] + "人评论"}}</strong>
+                     </span>
+
+
+                </div>
+            </div>
+        </div>
+         <div class="panel-body">
+             <div>
+                <h4>{{movie[2].split(' ')[0]}}的剧情简介</h4>
+                 {% if movie[12] %}
+                 <span>{{movie[12]}}</span>
+                 {% else %}
+                 <span>暂无简介</span>
+                 {% endif %}
+            </div>
+         </div>
+    </div>
+
+    <div class="panel panel-default">
+            <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">短评</a>
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{url_for('subject',id=movie[0])}}">全部</a></li>
+                    <li class="active"><a href="#">好友</a></li>
+                </ul>
+            </div>
+            </div>
+        </nav>
+
+
+        {% for comment in comments.items %}
+        {% include 'comment.html'%}
+        {% endfor %}
+        <div class="pagination  ">
+            <div class="row-fluid">
+                <div class="span3 offset2">
+                    {% if comments.has_prev %}
+                        <a href="/subject/{{comments.items[0].movie_id}}/{{ comments.prev_num }}">previous</a>
+                    {% endif %}
+                </div>
+                <div class="span3 ">
+                    <a href="">Page {{ comments.page }} of {{ comments.pages }}</a>
+                </div>
+                <div class="span3 ">
+
+                    {% if comments.has_next %}
+                        <a href="/subject/{{comments.items[0].movie_id}}/{{ comments.next_num }}">next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="panel panel-default" style="width: 80%">
+    <div class="panel-body">
+        {{form.hidden_tag()}}
+        <h1 class="text-center">{{title}}</h1>
+        {{ wtf.quick_form(form) }}
+    </div>
+</div>
+</div>
+{% endblock %}
